@@ -1,1 +1,1 @@
-java -jar /app/app.jar
+java -Dserver.port=$PORT -jar app.jar
