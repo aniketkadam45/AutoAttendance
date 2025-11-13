@@ -25,5 +25,7 @@ COPY --from=build /app/target/auto-attendance-0.0.1-SNAPSHOT.jar app.jar
 COPY start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 
+EXPOSE 8080
+
 # Use start script that respects Render's $PORT
 CMD ["sh", "-c", "/app/start.sh"]
