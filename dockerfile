@@ -5,7 +5,7 @@ FROM eclipse-temurin:22-jdk-alpine
 WORKDIR /app
 
 # Copy the JAR file from target folder
-COPY target/auto-attendance-0.0.1-SNAPSHOT.jar app.jar
+COPY target/auto-attendance-0.0.1-SNAPSHOT.jar /app.jar
 
 # Expose the port your Spring Boot app runs on
 EXPOSE 8080
