@@ -1,25 +1,27 @@
-# Use Maven + JDK image
-FROM maven:3.9.3-eclipse-temurin-22 AS build
+# Stage 1: Build
+FROM maven:3.9.3-jdk-22 AS build
 
-# Set working directory
 WORKDIR /app
 
-# Copy pom.xml and source code
+# Copy Maven files first for caching dependencies
 COPY pom.xml .
+RUN mvn dependency:go-offline
+
+# Copy source code
 COPY src ./src
 
-# Build the project
+# Build the project and skip tests
 RUN mvn clean package -DskipTests
 
-# Use a smaller JDK image for running the app
+# Stage 2: Run
 FROM eclipse-temurin:22-jdk
 
 WORKDIR /app
 
-# Copy the built JAR from the build stage
+# Copy the JAR from the build stage
 COPY --from=build /app/target/auto-attendance-0.0.1-SNAPSHOT.jar /app/auto-attendance-0.0.1-SNAPSHOT.jar
 
-# Copy start.sh
+# Copy start.sh and make it executable
 COPY start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 
