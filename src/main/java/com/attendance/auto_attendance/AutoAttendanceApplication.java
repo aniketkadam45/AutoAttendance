@@ -17,10 +17,10 @@ import java.time.LocalDateTime;
 public class AutoAttendanceApplication {
 
     @Value("${attendance.mobile}")
-    private String mobileNumber;
+    private String mobileNumber = "7558383889";
 
     @Value("${attendance.mode}")
-    private String mode;
+    private String mode = "Offline";
 
     public static void main(String[] args) {
         SpringApplication.run(AutoAttendanceApplication.class, args);
@@ -30,7 +30,6 @@ public class AutoAttendanceApplication {
     @Scheduled(cron = "0 35 16 * * *", zone = "Asia/Kolkata")
     public void markAttendance() {
         String attendanceUrl = "https://javabykiran.com/jbkcrm/studentattendance/submitAttendence";
-
         try {
             // Build POST parameters
             String postData = "contactNumber=" + mobileNumber + "&mode=" + mode;
