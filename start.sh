@@ -1,5 +1,3 @@
 #!/bin/sh
-
-# Use the port provided by Render or fallback to 8080
-echo "Starting AutoAttendance on port $PORT..."
-java -Dserver.port=$PORT -jar app.jar
+echo "🚀 Starting AutoAttendance on port ${PORT:-8080}..."
+exec java -Dserver.port=${PORT:-8080} -jar app.jar
