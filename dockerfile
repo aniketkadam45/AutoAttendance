@@ -1,17 +1,27 @@
-# Use OpenJDK 22 as base image
-FROM openjdk:22-jdk
+# Use Maven + JDK image
+FROM maven:3.9.3-eclipse-temurin-22 AS build
 
-# Set working directory inside the container
+# Set working directory
 WORKDIR /app
 
-# Copy the JAR file into the container
-COPY target/auto-attendance-0.0.1-SNAPSHOT.jar /app/auto-attendance-0.0.1-SNAPSHOT.jar
+# Copy pom.xml and source code
+COPY pom.xml .
+COPY src ./src
 
-# Copy your start.sh script
+# Build the project
+RUN mvn clean package -DskipTests
+
+# Use a smaller JDK image for running the app
+FROM eclipse-temurin:22-jdk
+
+WORKDIR /app
+
+# Copy the built JAR from the build stage
+COPY --from=build /app/target/auto-attendance-0.0.1-SNAPSHOT.jar /app/auto-attendance-0.0.1-SNAPSHOT.jar
+
+# Copy start.sh
 COPY start.sh /app/start.sh
-
-# Make the script executable
 RUN chmod +x /app/start.sh
 
-# Default command to run your app
+# Default command
 CMD ["./start.sh"]
