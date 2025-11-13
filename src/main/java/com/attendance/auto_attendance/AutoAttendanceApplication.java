@@ -5,6 +5,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -31,7 +33,6 @@ public class AutoAttendanceApplication {
     public void markAttendance() {
         String attendanceUrl = "https://javabykiran.com/jbkcrm/studentattendance/submitAttendence";
         try {
-            // Build POST parameters
             String postData = "contactNumber=" + mobileNumber + "&mode=" + mode;
 
             URL url = new URL(attendanceUrl);
@@ -41,7 +42,6 @@ public class AutoAttendanceApplication {
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setRequestProperty("Accept", "application/json");
 
-            // Send data
             try (OutputStream os = conn.getOutputStream()) {
                 os.write(postData.getBytes(StandardCharsets.UTF_8));
             }
@@ -58,6 +58,15 @@ public class AutoAttendanceApplication {
             conn.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    // ✅ Simple health endpoint for Render port detection
+    @RestController
+    class HealthController {
+        @GetMapping("/")
+        public String home() {
+            return "✅ AutoAttendance Service is running successfully!";
         }
     }
 }
