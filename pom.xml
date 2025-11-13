@@ -15,8 +15,8 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.7</version>
-        <relativePath/> <!-- lookup parent from the repository -->
+        <version>3.3.4</version> <!-- ✅ stable version -->
+        <relativePath/>
     </parent>
 
     <properties>
@@ -24,19 +24,19 @@
     </properties>
 
     <dependencies>
-        <!-- ✅ Core Spring Boot starter -->
+        <!-- Core Spring Boot starter -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
 
-        <!-- ✅ Enables @RestController, @GetMapping, etc. -->
+        <!-- ✅ Needed for @RestController, @GetMapping, etc. -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- ✅ Optional: JPA + MySQL (if you use database) -->
+        <!-- Optional: database support -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -48,7 +48,7 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- ✅ Optional: Testing -->
+        <!-- Test support -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
