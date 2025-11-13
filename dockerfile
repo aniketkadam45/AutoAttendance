@@ -1,29 +1,23 @@
-# ---------- Stage 1: Build using Maven ----------
+# Stage 1: Build the project using Maven + JDK 17
 FROM maven:3.8.7-eclipse-temurin-17 AS build
+
 WORKDIR /app
 
-# Copy Maven configuration and download dependencies
+# Copy Maven configuration and pre-fetch dependencies
 COPY pom.xml .
 RUN mvn dependency:go-offline
 
-# Copy the source code and build the JAR
+# Copy source code and build
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-
-# ---------- Stage 2: Run using JDK 22 ----------
+# Stage 2: Run the Spring Boot app with JDK 22
 FROM eclipse-temurin:22-jdk
+
 WORKDIR /app
+COPY --from=build /app/target/auto-attendance-0.0.1-SNAPSHOT.jar /app/app.jar
 
-# Copy the built JAR file from the build stage
-COPY --from=build /app/target/auto-attendance-0.0.1-SNAPSHOT.jar app.jar
-
-# Copy the startup script
-COPY start.sh /app/start.sh
-RUN chmod +x /app/start.sh
-
-# Expose port (Render auto-detects this)
 EXPOSE 8080
+ENV PORT=8080
 
-# Start the app
-CMD ["sh", "/app/start.sh"]
+CMD ["sh", "-c", "java -Dserver.port=$PORT -jar app.jar"]
