@@ -18,22 +18,25 @@ import java.time.LocalDateTime;
 @EnableScheduling
 public class AutoAttendanceApplication {
 
-    @Value("${attendance.mobile}")
-    private String mobileNumber = "7558383889";
-
-    @Value("${attendance.mode}")
-    private String mode = "Offline";
-
     public static void main(String[] args) {
         SpringApplication.run(AutoAttendanceApplication.class, args);
     }
 
-    // Scheduled to run every day at 4:35 PM IST
+    // Runs every day at 4:35 PM
     @Scheduled(cron = "0 35 16 * * *", zone = "Asia/Kolkata")
     public void markAttendance() {
         String attendanceUrl = "https://javabykiran.com/jbkcrm/studentattendance/submitAttendence";
+
         try {
-            String postData = "contactNumber=" + mobileNumber + "&mode=" + mode;
+            // 🔥 ALL REQUIRED FIELDS HERE
+            String postData =
+                    "admissionId=21668" +
+                    "&collegeId=" +
+                    "&batchId=902" +
+                    "&mode=Offline" +
+                    "&contactNumber=7558383889" +
+                    "&qualification=" +
+                    "&college_category=";
 
             URL url = new URL(attendanceUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -47,26 +50,26 @@ public class AutoAttendanceApplication {
             }
 
             int responseCode = conn.getResponseCode();
-            System.out.println(LocalDateTime.now() + " → Response: " + responseCode);
+            System.out.println(LocalDateTime.now() + " → Response Code: " + responseCode);
 
             if (responseCode == 200) {
                 System.out.println("✅ Attendance marked successfully!");
             } else {
-                System.out.println("⚠️ Failed to mark attendance. Response: " + responseCode);
+                System.out.println("⚠️ Attendance failed. Response code: " + responseCode);
             }
 
             conn.disconnect();
+
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("❌ Error marking attendance: " + e.getMessage());
         }
     }
 
-    // ✅ Simple health endpoint for Render port detection
     @RestController
     class HealthController {
         @GetMapping("/")
         public String home() {
-            return "✅ AutoAttendance Service is running successfully!";
+            return "✅ AutoAttendance Service running!";
         }
     }
 }
