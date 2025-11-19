@@ -44,8 +44,8 @@ public class AutoAttendanceApplication {
         // List of all students
         List<Student> students = List.of(
                 new Student(21668, 902, "7558383889"),
-                new Student(, , ""),
-                new Student(, , "")
+                new Student(1, 2, "123"),
+                new Student(12, 4, "321")
         );
     
         // Mark attendance for each student
