@@ -13,30 +13,60 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.List;
+
 
 @SpringBootApplication
 @EnableScheduling
 public class AutoAttendanceApplication {
 
+    static class Student {
+        int admissionId;
+        int batchId;
+        String contactNumber;
+    
+        public Student(int admissionId, int batchId, String contactNumber) {
+            this.admissionId = admissionId;
+            this.batchId = batchId;
+            this.contactNumber = contactNumber;
+        }
+    }
+
+
     public static void main(String[] args) {
         SpringApplication.run(AutoAttendanceApplication.class, args);
     }
 
-    // Runs every day at 4:35 PM
-    @Scheduled(cron = "0 35 16 * * *", zone = "Asia/Kolkata")
+    // Runs every day at 4:32 PM
+    @Scheduled(cron = "0 32 16 * * *", zone = "Asia/Kolkata")
     public void markAttendance() {
+    
+        // List of all students
+        List<Student> students = List.of(
+                new Student(21668, 902, "7558383889"),
+                new Student(, , ""),
+                new Student(, , "")
+        );
+    
+        // Mark attendance for each student
+        for (Student s : students) {
+            sendAttendance(s);
+        }
+    }
+
+    
+    public void sendAttendance(Student s) {
         String attendanceUrl = "https://javabykiran.com/jbkcrm/studentattendance/submitAttendence";
 
         try {
-            // 🔥 ALL REQUIRED FIELDS HERE
             String postData =
-                    "admissionId=21668" +
-                    "&collegeId=" +
-                    "&batchId=902" +
-                    "&mode=Offline" +
-                    "&contactNumber=7558383889" +
-                    "&qualification=" +
-                    "&college_category=";
+                "admissionId=" + s.admissionId +
+                "&collegeId=" +
+                "&batchId=" + s.batchId +
+                "&mode=Offline" +
+                "&contactNumber=" + s.contactNumber +
+                "&qualification=" +
+                "&college_category=";
 
             URL url = new URL(attendanceUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -50,12 +80,16 @@ public class AutoAttendanceApplication {
             }
 
             int responseCode = conn.getResponseCode();
-            System.out.println(LocalDateTime.now() + " → Response Code: " + responseCode);
+            System.out.println(LocalDateTime.now()  
+                + " | Student: " + s.admissionId
+                + " | Batch: " + s.batchId
+                + " | Response: " + responseCode
+            );
 
             if (responseCode == 200) {
-                System.out.println("✅ Attendance marked successfully!");
+                System.out.println("✅ Attendance marked successfully! " + s.admissionId);
             } else {
-                System.out.println("⚠️ Attendance failed. Response code: " + responseCode);
+                System.out.println("⚠️ Attendance failed for :" + s.admissionId + ". Response code: " + responseCode);
             }
 
             conn.disconnect();
