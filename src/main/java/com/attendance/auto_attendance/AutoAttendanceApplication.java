@@ -37,8 +37,8 @@ public class AutoAttendanceApplication {
         SpringApplication.run(AutoAttendanceApplication.class, args);
     }
 
-    // Runs every day at 4:32 PM
-    @Scheduled(cron = "0 32 14 * * *", zone = "Asia/Kolkata")
+    // Runs every day at 2:32 PM
+    @Scheduled(cron = "0 32 16 * * *", zone = "Asia/Kolkata", initialDelay = 30000)
     public void markAttendance() {
     
         // List of all students
