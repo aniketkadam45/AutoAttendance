@@ -38,7 +38,7 @@ public class AutoAttendanceApplication {
     }
 
     // Runs every day at 4:32 PM
-    @Scheduled(cron = "0 32 14 * * * , 0 0 15 * * *", zone = "Asia/Kolkata")
+    @Scheduled(cron = "0 32 14 * * *", zone = "Asia/Kolkata")
     public void markAttendance() {
     
         // List of all students
