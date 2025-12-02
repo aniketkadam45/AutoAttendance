@@ -14,6 +14,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 
 
 @SpringBootApplication
@@ -38,7 +39,7 @@ public class AutoAttendanceApplication {
     }
 
     // Runs every day at 2:32 PM
-    @Scheduled(cron = "0 32 16 * * *", zone = "Asia/Kolkata")
+    @Scheduled(cron = "0 32 14 * * *", zone = "Asia/Kolkata")
     public void markAttendance() {
     
         // List of all students
@@ -48,12 +49,18 @@ public class AutoAttendanceApplication {
                 new Student(21789, 1002, "9860722004"),
                 new Student(21719, 1002, "8381016784")
         );
+
+        Random random = new Random();
     
         // Mark attendance for each student
         for (Student s : students) {
             sendAttendance(s);
+            
+            int delay = 1000 + random.nextInt(15000 - 1000 + 1);
+            System.out.println("⏳ Waiting " + delay/1000 + " seconds before next student...");
+            
             try {
-                Thread.sleep(13000);
+                Thread.sleep(delay);
             } 
             catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
