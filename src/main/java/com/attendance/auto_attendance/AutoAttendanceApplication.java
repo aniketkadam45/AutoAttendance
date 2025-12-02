@@ -52,6 +52,12 @@ public class AutoAttendanceApplication {
         // Mark attendance for each student
         for (Student s : students) {
             sendAttendance(s);
+            try {
+                Thread.sleep(13000);
+            } 
+            catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
 
