@@ -45,7 +45,7 @@ public class AutoAttendanceApplication {
         // List of all students
         List<Student> students = List.of(
                 new Student(21668, 1002, "7558383889"),
-                // new Student(22145, 1002, "7559310905"),
+                new Student(22145, 1002, "7559310905")
                 // new Student(21789, 1002, "9860722004"),
                 // new Student(21719, 1002, "8381016784"),
                 // new Student(21608, 1002, "7378713110")
