@@ -77,7 +77,6 @@ Use UptimeRobot to ping your Render URL every 5 minutes.
 - Retry logic  
 - Notifications  
 - Dashboard  
-- Multi-user support
 
 ## 🧑‍💻 Author
 Aniket Kadam
